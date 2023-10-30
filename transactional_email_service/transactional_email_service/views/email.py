@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from transactional_email_service.serializers.email import EmailSerializer
 from transactional_email_service.services.send_grid import send_email_via_sendgrid
+from transactional_email_service.services.mailgun import send_email_via_mailgun
 from transactional_email_service.settings import EMIAL_SERVICE
 
 
@@ -23,9 +24,12 @@ def send_email_view(request):
         data = JSONParser().parse(request)
         serializer = EmailSerializer(data=data)
         if serializer.is_valid():
-            if EMIAL_SERVICE == 'send_grid':
-                send_email_via_sendgrid(**serializer.validated_data)
-                return JsonResponse(data, status=204)
+            if EMIAL_SERVICE.lower() == 'send_grid':
+                response = send_email_via_sendgrid(**serializer.validated_data)
+                return JsonResponse(data, status=response.status_code)
+            elif EMIAL_SERVICE.lower() == 'mailgun':
+                response = send_email_via_mailgun(**serializer.validated_data)
+                return JsonResponse(data, status=response.status_code)
             else:
                 # TODO: Add logging
                 raise Exception(f'Email service is not defined. Email was not sent.')
