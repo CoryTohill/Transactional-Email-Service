@@ -128,3 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMIAL_SERVICE = os.environ.get('EMIAL_SERVICE', 'send_grid')
 
 SEND_GRID_API_KEY = os.environ.get('SEND_GRID_API_KEY', '')
+
+MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY', '')
+
+MAILGUN_DOMAIN_NAME = os.environ.get('MAILGUN_DOMAIN_NAME', 'sandbox691e29bdd56e4e929e9a59a80bf4a886.mailgun.org')

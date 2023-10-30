@@ -60,8 +60,8 @@ def send_email_via_sendgrid(to_email, to_name, from_email, from_name, subject, b
         }
     }
     json_data = json.dumps(data)
+    headers = _get_sendgrid_headers()
     try:
-        headers = _get_sendgrid_headers()
         response = requests.post('https://api.sendgrid.com/v3/mail/send', headers=headers, data=json_data)
         return response
     except Exception as e:
