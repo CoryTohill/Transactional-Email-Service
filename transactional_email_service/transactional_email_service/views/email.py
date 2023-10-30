@@ -2,6 +2,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from transactional_email_service.serializers.email import EmailSerializer
+from transactional_email_service.services.send_grid import send_email_via_sendgrid
+from transactional_email_service.settings import EMIAL_SERVICE
 
 
 @csrf_exempt
@@ -21,6 +23,11 @@ def send_email_view(request):
         data = JSONParser().parse(request)
         serializer = EmailSerializer(data=data)
         if serializer.is_valid():
-          # TODO: Send the email data to 3rd party service for actual sending.
-          return JsonResponse(data, status=200)
-        return JsonResponse(serializer.errors, status=400)
+            if EMIAL_SERVICE == 'send_grid':
+                send_email_via_sendgrid(**serializer.validated_data)
+                return JsonResponse(data, status=204)
+            else:
+                # TODO: Add logging
+                raise Exception(f'Email service is not defined. Email was not sent.')
+        else:
+            return JsonResponse(serializer.errors, status=400)
