@@ -19,6 +19,5 @@ from django.urls import path
 from transactional_email_service.views.email import send_email_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path("email/", send_email_view, name="email"),
 ]

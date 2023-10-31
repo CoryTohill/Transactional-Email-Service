@@ -125,7 +125,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMIAL_SERVICE = os.environ.get('EMIAL_SERVICE', 'send_grid')
+EMAIL_SERVICE = os.environ.get('EMAIL_SERVICE', 'send_grid')
 
 SEND_GRID_API_KEY = os.environ.get('SEND_GRID_API_KEY', '')
 
